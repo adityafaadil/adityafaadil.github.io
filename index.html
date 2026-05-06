@@ -1,502 +1,1065 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Portfolio – Data Entry</title>
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Hurun'in Zakkiyah — Virtual Assistant Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
   :root {
-    --accent: #3A8FA8;
-    --accent-light: #eef6f9;
-    --accent-border: #a8d8e8;
-    --dark: #2a2a2a;
-    --mid: #5a5a5a;
-    --soft: #8a8a8a;
-    --bg: #ffffff;
-    --bg2: #f8f8f8;
-    --border: #e8e8e8;
+    --cream: #F7EFE5;
+    --cream-dark: #EDE0CC;
+    --brown: #3A2010;
+    --brown-mid: #7C4A2D;
+    --terracotta: #C4622D;
+    --sage: #7A9170;
+    --sage-light: #C9DBBA;
+    --sand: #D9C4A5;
+    --white: #FDFAF6;
+    --text: #2C1A0E;
+    --text-muted: #7A5E4A;
   }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
-  body { font-family: 'Nunito', sans-serif; background: var(--bg2); color: var(--dark); font-size: 15px; line-height: 1.6; }
 
-  [contenteditable] { cursor: text; }
-  [contenteditable]:hover { outline: 2px dashed var(--accent-border); outline-offset: 3px; border-radius: 4px; }
-  [contenteditable]:focus { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; background: var(--accent-light); }
+  html { scroll-behavior: smooth; }
 
-  /* TOOLBAR */
-  .toolbar {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 999;
-    background: #1e1e1e; color: #fff;
-    padding: 0 24px; height: 52px;
-    display: flex; align-items: center; justify-content: space-between; gap: 12px;
-    font-family: 'Nunito', sans-serif; font-size: 13px;
-    box-shadow: 0 2px 12px rgba(0,0,0,.25);
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.7;
   }
-  .toolbar-left { display: flex; align-items: center; gap: 10px; }
-  .toolbar-badge { background: var(--accent); color: #fff; padding: 3px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: .5px; white-space: nowrap; }
-  .toolbar-role { color: #ccc; font-size: 12px; white-space: nowrap; }
-  .toolbar-tip { color: #777; font-size: 12px; }
-  .toolbar-right { display: flex; gap: 8px; flex-shrink: 0; }
-  .btn-tool { background: transparent; border: 1px solid #444; color: #ddd; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 600; transition: all .15s; white-space: nowrap; }
-  .btn-tool:hover { background: #333; border-color: #666; }
-  .btn-tool.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .btn-tool.primary:hover { opacity: .85; }
 
-  /* PAGE */
-  .page { max-width: 820px; margin: 0 auto; padding: 72px 28px 60px; }
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(247, 239, 229, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--sand);
+    padding: 0 5%;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 62px;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem; font-weight: 600;
+    color: var(--brown); letter-spacing: 0.02em;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.04em;
+    color: var(--text-muted); text-decoration: none;
+    text-transform: uppercase; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--terracotta); }
 
-  /* HEADER */
-  .header { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 40px 44px; margin-bottom: 16px; position: relative; overflow: hidden; }
-  .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: var(--accent); }
-  .header-role-badge { display: inline-flex; align-items: center; gap: 7px; background: var(--accent-light); border: 1px solid var(--accent-border); color: var(--accent); padding: 5px 14px; border-radius: 20px; font-size: 11px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase; margin-bottom: 18px; }
-  .header-name { font-family: 'Lora', serif; font-size: 36px; font-weight: 700; color: var(--dark); line-height: 1.2; margin-bottom: 6px; min-width: 200px; }
-  .header-tagline { font-size: 15px; color: var(--accent); font-weight: 600; margin-bottom: 16px; }
-  .header-bio { font-size: 14px; color: var(--mid); line-height: 1.85; max-width: 560px; margin-bottom: 24px; }
-  .header-contacts { display: flex; flex-wrap: wrap; gap: 14px; }
-  .contact-item { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--mid); }
-  .contact-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
-  .bg-icon { position: absolute; right: 36px; top: 50%; transform: translateY(-50%); font-size: 100px; opacity: .05; pointer-events: none; user-select: none; line-height: 1; }
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 0;
+    overflow: hidden;
+  }
+  .hero-left {
+    background: var(--brown);
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-start;
+    padding: 8rem 4rem 6rem 5%;
+    position: relative; overflow: hidden;
+  }
+  .hero-left::before {
+    content: '';
+    position: absolute; top: -80px; left: -80px;
+    width: 400px; height: 400px;
+    background: var(--terracotta);
+    border-radius: 50%;
+    opacity: 0.12;
+  }
+  .hero-tag {
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.15em;
+    text-transform: uppercase; color: var(--sage-light);
+    background: rgba(122,145,112,0.15);
+    border: 1px solid rgba(201,219,186,0.3);
+    padding: 6px 16px; border-radius: 100px;
+    margin-bottom: 1.8rem; display: inline-block;
+  }
+  .hero-name {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 5vw, 4.2rem);
+    font-weight: 700; line-height: 1.1;
+    color: var(--white); margin-bottom: 1rem;
+  }
+  .hero-name em {
+    font-style: italic; color: var(--sand);
+    display: block;
+  }
+  .hero-role {
+    font-size: 0.9rem; font-weight: 400;
+    color: var(--sand); opacity: 0.85;
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.02em;
+  }
+  .hero-desc {
+    font-size: 0.92rem; color: rgba(253,250,246,0.7);
+    max-width: 380px; line-height: 1.8;
+    margin-bottom: 2.8rem;
+  }
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 10px;
+    background: var(--terracotta); color: white;
+    font-size: 0.82rem; font-weight: 600; letter-spacing: 0.06em;
+    text-transform: uppercase; text-decoration: none;
+    padding: 14px 28px; border-radius: 4px;
+    transition: all 0.25s;
+  }
+  .hero-cta:hover { background: #a8501f; transform: translateY(-2px); }
 
-  /* SECTION */
-  .section { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; padding: 30px 40px; margin-bottom: 16px; }
-  .section-head { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
-  .section-title { font-family: 'Lora', serif; font-size: 13px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent); white-space: nowrap; }
-  .section-line { flex: 1; height: 1px; background: var(--border); }
+  .hero-right {
+    background: var(--cream-dark);
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: flex-start;
+    padding: 8rem 5% 6rem 3.5rem;
+  }
+  .hero-stats {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.5rem; width: 100%; margin-bottom: 3rem;
+  }
+  .stat-card {
+    background: var(--white);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--sand);
+  }
+  .stat-number {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem; font-weight: 700;
+    color: var(--brown); line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .stat-label {
+    font-size: 0.78rem; font-weight: 500;
+    color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .skill-chips {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 2.5rem;
+  }
+  .chip {
+    font-size: 0.78rem; font-weight: 500;
+    padding: 5px 14px; border-radius: 100px;
+    border: 1.5px solid var(--brown-mid);
+    color: var(--brown-mid);
+    background: transparent;
+  }
+  .chip.filled {
+    background: var(--brown-mid); color: white;
+    border-color: var(--brown-mid);
+  }
+  .chip.green {
+    background: var(--sage-light); color: var(--sage);
+    border-color: var(--sage);
+  }
+  .hero-note {
+    font-size: 0.8rem; color: var(--text-muted);
+    font-style: italic;
+    border-left: 3px solid var(--terracotta);
+    padding-left: 12px;
+    line-height: 1.6;
+  }
 
-  /* TAGS */
-  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
-  .skill-tag { background: var(--accent-light); border: 1px solid var(--accent-border); color: var(--accent); padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; min-width: 40px; }
-  .tool-tag { background: var(--bg2); border: 1px solid var(--border); color: var(--mid); padding: 6px 14px; border-radius: 8px; font-size: 13px; font-weight: 500; min-width: 40px; }
-  .tags-hint { margin-top: 10px; font-size: 12px; color: var(--soft); font-style: italic; }
+  /* SECTIONS */
+  section { padding: 6rem 5%; }
+
+  .section-label {
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--terracotta); font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 3.5vw, 2.8rem);
+    font-weight: 700; color: var(--brown);
+    margin-bottom: 1rem; line-height: 1.2;
+  }
+  .section-sub {
+    font-size: 0.95rem; color: var(--text-muted);
+    max-width: 560px; line-height: 1.8;
+  }
+
+  /* PROJECT SECTIONS */
+  .project-section {
+    background: var(--white);
+    border-radius: 20px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+    border: 1px solid var(--sand);
+    box-shadow: 0 2px 20px rgba(58,32,16,0.05);
+  }
+  .project-header {
+    padding: 2.5rem 3rem;
+    display: flex; align-items: flex-start; justify-content: space-between;
+    gap: 2rem;
+    cursor: pointer;
+    background: var(--white);
+    transition: background 0.2s;
+  }
+  .project-header:hover { background: var(--cream); }
+  .project-header-left { flex: 1; }
+  .project-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.72rem; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px; border-radius: 100px;
+    margin-bottom: 0.8rem;
+  }
+  .badge-orange { background: #FDEEE3; color: var(--terracotta); }
+  .badge-green { background: #E8F0E3; color: var(--sage); }
+  .project-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 600;
+    color: var(--brown); margin-bottom: 0.4rem;
+  }
+  .project-meta {
+    font-size: 0.82rem; color: var(--text-muted);
+    display: flex; gap: 1.5rem; flex-wrap: wrap;
+    align-items: center;
+  }
+  .project-meta span { display: flex; align-items: center; gap: 5px; }
+  .project-header-right {
+    display: flex; flex-direction: column; align-items: flex-end; gap: 8px;
+    flex-shrink: 0;
+  }
+  .grade-badge {
+    width: 52px; height: 52px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 700;
+  }
+  .grade-a { background: var(--sage-light); color: var(--sage); }
+  .grade-b { background: #FDE9D6; color: var(--terracotta); }
+  .toggle-icon {
+    font-size: 1.2rem; color: var(--text-muted);
+    transition: transform 0.3s;
+  }
+  .project-section.open .toggle-icon { transform: rotate(180deg); }
+
+  .project-body {
+    border-top: 1px solid var(--cream-dark);
+    display: none;
+    padding: 2.5rem 3rem;
+  }
+  .project-section.open .project-body { display: block; }
+
+  /* TASK CARDS */
+  .tasks-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem; margin-bottom: 2rem;
+  }
+  .task-card {
+    background: var(--cream);
+    border-radius: 12px; padding: 1.5rem;
+    border: 1px solid var(--sand);
+    position: relative; overflow: hidden;
+  }
+  .task-card::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 3px;
+  }
+  .task-card.grade-a-card::before { background: var(--sage); }
+  .task-card.grade-b-card::before { background: var(--terracotta); }
+  .task-number {
+    font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
+    letter-spacing: 0.1em; color: var(--text-muted);
+    margin-bottom: 0.5rem;
+  }
+  .task-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem; font-weight: 600;
+    color: var(--brown); margin-bottom: 0.8rem;
+    line-height: 1.3;
+  }
+  .task-score-row {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 0.8rem;
+  }
+  .score-bar-wrap {
+    flex: 1; background: var(--cream-dark);
+    border-radius: 100px; height: 5px;
+    margin-right: 10px; overflow: hidden;
+  }
+  .score-bar {
+    height: 100%; border-radius: 100px;
+    background: var(--sage);
+    transition: width 0.8s ease;
+  }
+  .score-bar.orange { background: var(--terracotta); }
+  .score-text {
+    font-size: 0.8rem; font-weight: 600;
+    color: var(--brown); white-space: nowrap;
+  }
+  .task-criteria {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+  .criteria-item {
+    background: var(--white);
+    border-radius: 6px; padding: 6px 10px;
+  }
+  .criteria-label {
+    font-size: 0.65rem; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--text-muted);
+    font-weight: 600;
+  }
+  .criteria-value {
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--brown);
+  }
+
+  /* Q&A STYLE for Milk & Honey */
+  .qa-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 1.2rem;
+  }
+  .qa-card {
+    background: var(--cream);
+    border-radius: 12px; padding: 1.5rem;
+    border: 1px solid var(--sand);
+  }
+  .qa-number {
+    display: inline-block;
+    width: 28px; height: 28px;
+    background: var(--brown); color: var(--cream);
+    border-radius: 50%;
+    font-size: 0.78rem; font-weight: 600;
+    text-align: center; line-height: 28px;
+    margin-bottom: 0.8rem;
+  }
+  .qa-q {
+    font-size: 0.82rem; font-weight: 600;
+    color: var(--brown); margin-bottom: 0.5rem;
+    line-height: 1.4;
+  }
+  .qa-desc {
+    font-size: 0.8rem; color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .qa-skills {
+    display: flex; flex-wrap: wrap; gap: 5px;
+    margin-top: 0.8rem;
+  }
+  .qa-skill {
+    font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    background: var(--brown); color: var(--cream);
+    padding: 3px 10px; border-radius: 100px;
+  }
+
+  /* FEEDBACK HIGHLIGHT */
+  .feedback-box {
+    background: linear-gradient(135deg, var(--brown) 0%, #5A3020 100%);
+    border-radius: 16px; padding: 2.5rem 3rem;
+    color: var(--cream); margin-bottom: 2rem;
+    position: relative; overflow: hidden;
+  }
+  .feedback-box::before {
+    content: '❝';
+    position: absolute; top: -10px; right: 30px;
+    font-size: 8rem; color: rgba(255,255,255,0.06);
+    font-family: serif; line-height: 1;
+  }
+  .feedback-box p {
+    font-size: 0.92rem; line-height: 1.9;
+    opacity: 0.88; position: relative;
+  }
+  .feedback-source {
+    font-size: 0.75rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--sand); margin-top: 1.2rem;
+    opacity: 0.7; position: relative;
+  }
 
   /* ABOUT */
-  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
-  .info-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--soft); margin-bottom: 5px; }
-  .info-value { font-size: 14px; color: var(--dark); font-weight: 600; }
-
-  /* PROJECT CARD */
-  .project-card { border: 1px solid var(--border); border-radius: 12px; padding: 24px 28px; margin-bottom: 14px; position: relative; transition: border-color .2s; }
-  .project-card:last-child { margin-bottom: 0; }
-  .project-card::before { content: ''; position: absolute; left: 0; top: 16px; bottom: 16px; width: 3px; border-radius: 0 3px 3px 0; background: var(--accent); }
-  .project-num { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--soft); margin-bottom: 6px; }
-  .project-brand { font-size: 11px; font-weight: 700; letter-spacing: .5px; color: var(--accent); margin-bottom: 6px; min-height: 18px; }
-  .project-title { font-family: 'Lora', serif; font-size: 17px; font-weight: 600; color: var(--dark); margin-bottom: 10px; line-height: 1.4; min-height: 24px; }
-  .project-desc { font-size: 13px; color: var(--mid); line-height: 1.85; margin-bottom: 16px; min-height: 40px; }
-
-  /* META ROWS */
-  .project-meta { display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; }
-  .meta-row { display: flex; align-items: center; gap: 10px; }
-  .meta-label { font-size: 12px; color: var(--soft); font-weight: 600; white-space: nowrap; min-width: 110px; }
-  .meta-value { font-size: 13px; color: var(--mid); font-weight: 500; background: var(--bg2); border: 1px solid var(--border); border-radius: 6px; padding: 5px 12px; min-width: 120px; }
-
-  /* LINK BOX */
-  .link-box { background: var(--accent-light); border: 1px solid var(--accent-border); border-radius: 10px; padding: 16px 18px; }
-  .link-box-header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
-  .link-icon { font-size: 16px; }
-  .link-label { font-size: 13px; font-weight: 700; color: var(--dark); }
-  .link-hint { font-size: 11px; color: var(--soft); margin-left: auto; }
-  .link-input-wrap { display: flex; gap: 8px; margin-bottom: 10px; }
-  .link-input {
-    flex: 1; padding: 9px 14px; border-radius: 8px;
-    border: 1.5px solid var(--accent-border); background: #fff;
-    font-family: 'Nunito', sans-serif; font-size: 13px; color: var(--dark);
-    transition: border-color .2s; outline: none;
+  .about-section {
+    background: var(--brown);
+    padding: 6rem 5%;
   }
-  .link-input:focus { border-color: var(--accent); }
-  .link-input::placeholder { color: #bbb; }
-  .link-test-btn {
-    background: var(--accent); color: #fff; border: none;
-    padding: 9px 16px; border-radius: 8px; cursor: pointer;
-    font-family: 'Nunito', sans-serif; font-size: 12px; font-weight: 700;
-    white-space: nowrap; transition: opacity .15s;
+  .about-inner {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 5rem;
+    align-items: center;
   }
-  .link-test-btn:hover { opacity: .85; }
-  .link-preview { margin-top: 8px; padding: 8px 12px; background: #fff; border-radius: 7px; border: 1px solid var(--accent-border); }
-  .link-preview-anchor { font-size: 12px; color: var(--accent); font-weight: 600; word-break: break-all; text-decoration: none; }
-  .link-preview-anchor:hover { text-decoration: underline; }
-  .link-types { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
-  .link-type-pill {
-    background: #fff; border: 1px solid var(--accent-border); color: var(--accent);
-    padding: 4px 10px; border-radius: 20px; font-size: 11px; font-weight: 600;
-    cursor: pointer; transition: all .15s; user-select: none;
+  .about-left .section-label { color: var(--sand); }
+  .about-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.4rem; font-weight: 700;
+    color: var(--white); line-height: 1.2;
+    margin-bottom: 1.5rem;
   }
-  .link-type-pill:hover { background: var(--accent); color: #fff; }
+  .about-title em { font-style: italic; color: var(--sand); }
+  .about-desc {
+    font-size: 0.92rem; color: rgba(253,250,246,0.7);
+    line-height: 1.9;
+  }
+  .skills-list {
+    list-style: none;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
+  .skills-list li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 0.85rem; color: rgba(253,250,246,0.8);
+    line-height: 1.4;
+  }
+  .skills-list li::before {
+    content: '✦';
+    color: var(--terracotta); flex-shrink: 0;
+    margin-top: 2px; font-size: 0.7rem;
+  }
+  .skills-section-label {
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--sand); font-weight: 600; opacity: 0.7;
+    margin-bottom: 1rem;
+  }
 
-  /* EDUCATION */
-  .edu-card { border: 1px solid var(--border); border-radius: 12px; padding: 20px 24px; margin-bottom: 12px; }
-  .edu-card:last-child { margin-bottom: 0; }
-  .edu-label { font-size: 11px; font-weight: 700; letter-spacing: .5px; color: var(--accent); margin-bottom: 5px; }
-  .edu-title { font-size: 15px; font-weight: 700; color: var(--dark); margin-bottom: 4px; }
-  .edu-desc { font-size: 13px; color: var(--mid); line-height: 1.7; }
+  /* PROJECTS MAIN */
+  .projects-section {
+    max-width: 1100px; margin: 0 auto;
+  }
+  .projects-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 3rem; flex-wrap: wrap; gap: 1rem;
+  }
 
-  /* NOTE */
-  .projects-note { background: var(--accent-light); border: 1px solid var(--accent-border); border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; font-size: 12px; color: var(--accent); line-height: 1.7; }
+  /* CONTACT */
+  .contact-section {
+    background: var(--cream-dark);
+    text-align: center;
+    padding: 6rem 5%;
+  }
+  .contact-inner { max-width: 600px; margin: 0 auto; }
+  .contact-links {
+    display: flex; gap: 1rem; justify-content: center;
+    flex-wrap: wrap; margin-top: 2.5rem;
+  }
+  .contact-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 24px; border-radius: 6px;
+    font-size: 0.85rem; font-weight: 600;
+    text-decoration: none; transition: all 0.2s;
+    border: 2px solid transparent;
+  }
+  .btn-dark {
+    background: var(--brown); color: var(--cream);
+  }
+  .btn-dark:hover { background: var(--brown-mid); }
+  .btn-outline {
+    background: transparent;
+    border-color: var(--brown-mid);
+    color: var(--brown);
+  }
+  .btn-outline:hover { background: var(--brown); color: var(--cream); border-color: var(--brown); }
 
   /* FOOTER */
-  .footer { text-align: center; padding: 20px; font-size: 12px; color: var(--soft); }
-  .footer span { color: var(--accent); font-weight: 700; }
-
-  /* PRINT */
-  @media print {
-    .toolbar { display: none !important; }
-    body { background: #fff; }
-    .page { padding: 20px 32px; max-width: 100%; }
-    .header, .section { border: 1px solid #ddd; break-inside: avoid; }
-    .project-card { break-inside: avoid; }
-    [contenteditable] { outline: none !important; background: transparent !important; }
-    .projects-note, .tags-hint, .link-types, .link-test-btn, .link-hint { display: none !important; }
-    .link-box { background: #f9f9f9; border-color: #ddd; }
-    .link-input { border-color: #ddd; }
-    .link-input-wrap { margin-bottom: 4px; }
+  footer {
+    background: var(--brown); color: rgba(253,250,246,0.4);
+    text-align: center; padding: 2rem;
+    font-size: 0.78rem;
   }
 
-  @media (max-width: 620px) {
-    .page { padding: 66px 14px 40px; }
-    .header, .section { padding: 22px 18px; }
-    .header-name { font-size: 26px; }
-    .two-col { grid-template-columns: 1fr; }
-    .bg-icon { display: none; }
-    .toolbar-tip, .toolbar-role { display: none; }
-    .meta-row { flex-direction: column; align-items: flex-start; gap: 4px; }
-    .link-hint { display: none; }
+  /* DIVIDER */
+  .divider {
+    width: 48px; height: 3px;
+    background: var(--terracotta);
+    margin: 1.5rem 0;
+  }
+
+  /* HIGHLIGHT CALLOUT */
+  .callout {
+    background: #FFF6EE;
+    border: 1.5px solid #F3D5B5;
+    border-radius: 10px; padding: 1rem 1.5rem;
+    font-size: 0.85rem; color: var(--brown-mid);
+    margin-bottom: 2rem;
+    display: flex; gap: 10px; align-items: flex-start;
+  }
+  .callout-icon { font-size: 1rem; flex-shrink: 0; margin-top: 2px; }
+
+  /* OVERALL SCORE */
+  .score-summary {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 1rem; margin-bottom: 2rem;
+  }
+  .score-box {
+    text-align: center;
+    background: var(--cream); border-radius: 10px;
+    padding: 1.2rem; border: 1px solid var(--sand);
+  }
+  .score-big {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 700;
+    color: var(--brown); line-height: 1;
+  }
+  .score-of { font-size: 0.75rem; color: var(--text-muted); }
+  .score-cat {
+    font-size: 0.72rem; text-transform: uppercase;
+    letter-spacing: 0.06em; color: var(--text-muted);
+    font-weight: 600; margin-top: 4px;
+  }
+
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; }
+    .hero-left, .hero-right { padding: 5rem 6% 4rem; }
+    .hero-stats { grid-template-columns: 1fr 1fr; }
+    .about-inner { grid-template-columns: 1fr; gap: 3rem; }
+    .qa-grid { grid-template-columns: 1fr; }
+    .project-header { padding: 1.8rem 1.5rem; }
+    .project-body { padding: 1.5rem; }
+    .tasks-grid { grid-template-columns: 1fr; }
+    .score-summary { grid-template-columns: repeat(2, 1fr); }
+    nav { padding: 0 4%; }
+    .nav-links { display: none; }
   }
 </style>
 </head>
 <body>
 
-<div class="toolbar">
-  <div class="toolbar-left">
-    <span class="toolbar-badge">30DPC Batch 2</span>
-    <span class="toolbar-role">📊 Data Entry</span>
-    <span class="toolbar-tip">✏️ Klik teks untuk mengedit · Isi link di setiap task</span>
-  </div>
-  <div class="toolbar-right">
-    <button class="btn-tool" onclick="window.print()">🖨️ Download PDF</button>
-    <button class="btn-tool primary" onclick="saveHTML()">💾 Save HTML</button>
-  </div>
-</div>
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Hurun'in Zakkiyah</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Portfolio</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
 
-<div class="page">
-
-  <div class="header">
-    <div class="bg-icon">📊</div>
-    <div class="header-role-badge">📊 Data Entry</div>
-    <div class="header-name" contenteditable="true" spellcheck="false">Nama Lengkap Kamu</div>
-    <div class="header-tagline" contenteditable="true" spellcheck="false">Data Entry · Freelancer</div>
-    <div class="header-bio" contenteditable="true" spellcheck="false">Tulis bio singkat di sini. Ceritakan siapa kamu, bidang yang kamu tekuni, dan nilai yang kamu tawarkan sebagai Data Entry. 2–3 kalimat sudah cukup — ringkas, jelas, dan berkesan.</div>
-    <div class="header-contacts">
-      <div class="contact-item"><div class="contact-dot"></div><span contenteditable="true" spellcheck="false">email@kamu.com</span></div>
-      <div class="contact-item"><div class="contact-dot"></div><span contenteditable="true" spellcheck="false">linkedin.com/in/namakamu</span></div>
-      <div class="contact-item"><div class="contact-dot"></div><span contenteditable="true" spellcheck="false">Kota, Indonesia</span></div>
-      <div class="contact-item"><div class="contact-dot"></div><span contenteditable="true" spellcheck="false">+62 8xx-xxxx-xxxx</span></div>
-    </div>
-  </div>
-
-  <div class="section">
-    <div class="section-head"><div class="section-title">Tentang Saya</div><div class="section-line"></div></div>
-    <div class="two-col">
-      <div><div class="info-label">Ketersediaan</div><div class="info-value" contenteditable="true" spellcheck="false">Full-time / Part-time Freelance</div></div>
-      <div><div class="info-label">Pengalaman</div><div class="info-value" contenteditable="true" spellcheck="false">Fresh Graduate / Pemula</div></div>
-      <div><div class="info-label">Bahasa</div><div class="info-value" contenteditable="true" spellcheck="false">Indonesia, English (Passive)</div></div>
-      <div><div class="info-label">Platform Aktif</div><div class="info-value" contenteditable="true" spellcheck="false">Upwork, Projects.co.id, FastWork</div></div>
-    </div>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <span class="hero-tag">✦ Virtual Assistant Portfolio</span>
+    <h1 class="hero-name">
+      Hurun'in
+      <em>Zakkiyah</em>
+    </h1>
+    <p class="hero-role">Admin & Research VA  ·  Data Entry VA</p>
+    <p class="hero-desc">
+      Detail-oriented and adaptable, with hands-on experience in research, 
+      data entry, scheduling, and client communication — built through real 
+      task-based portfolio challenges.
+    </p>
+    <a href="#projects" class="hero-cta">View My Work ↓</a>
   </div>
 
-  <div class="section">
-    <div class="section-head"><div class="section-title">Skills</div><div class="section-line"></div></div>
-    <div class="tags">
-      <div class="skill-tag" contenteditable="true" spellcheck="false">Data Cleaning & Validation</div>
-      <div class="skill-tag" contenteditable="true" spellcheck="false">Google Sheets Formula</div>
-      <div class="skill-tag" contenteditable="true" spellcheck="false">Database Building</div>
-      <div class="skill-tag" contenteditable="true" spellcheck="false">Data Visualization (Chart)</div>
-      <div class="skill-tag" contenteditable="true" spellcheck="false">Google Forms</div>
-      <div class="skill-tag" contenteditable="true" spellcheck="false">Spreadsheet Management</div>
-      <div class="skill-tag" contenteditable="true" spellcheck="false">Pivot Table</div>
-      <div class="skill-tag" contenteditable="true" spellcheck="false">File Naming Convention</div>
+  <div class="hero-right">
+    <div class="hero-stats">
+      <div class="stat-card">
+        <div class="stat-number">7+</div>
+        <div class="stat-label">VA Tasks Completed</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">A</div>
+        <div class="stat-label">Avg. Grade (30DPC)</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">2</div>
+        <div class="stat-label">Programs Joined</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Tasks Approved</div>
+      </div>
     </div>
-    <div class="tags-hint">💡 Klik untuk mengedit. Tambah atau hapus sesuai kemampuan kamu yang sebenarnya.</div>
-  </div>
 
-  <div class="section">
-    <div class="section-head"><div class="section-title">Tools yang Dikuasai</div><div class="section-line"></div></div>
-    <div class="tags">
-      <div class="tool-tag" contenteditable="true" spellcheck="false">Google Sheets</div>
-      <div class="tool-tag" contenteditable="true" spellcheck="false">Microsoft Excel</div>
-      <div class="tool-tag" contenteditable="true" spellcheck="false">Google Forms</div>
-      <div class="tool-tag" contenteditable="true" spellcheck="false">Google Drive</div>
+    <div class="skill-chips">
+      <span class="chip filled">Research</span>
+      <span class="chip filled">Data Entry</span>
+      <span class="chip green">Calendar Mgmt</span>
+      <span class="chip green">Email Writing</span>
+      <span class="chip">Google Sheets</span>
+      <span class="chip">Google Forms</span>
+      <span class="chip">Budget Planning</span>
+      <span class="chip">Scheduling</span>
     </div>
-    <div class="tags-hint">💡 Sesuaikan dengan tools yang benar-benar kamu pakai saat mengerjakan task.</div>
-  </div>
 
-  <div class="section">
-    <div class="section-head"><div class="section-title">Portofolio Proyek</div><div class="section-line"></div></div>
-    <div class="projects-note">
-      📋 <strong>Cara isi:</strong> Tulis task yang kamu kerjakan — boleh dari kategori role mana saja. Tempel link hasil kerja di kotak biru setiap task. Kosongkan slot yang tidak terpakai.
+    <p class="hero-note">
+      All work here is based on real task briefs — reviewed and approved by professional mentors.
+      Currently available for VA opportunities.
+    </p>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section" id="about">
+  <div class="about-inner">
+    <div class="about-left">
+      <div class="section-label">About Me</div>
+      <div class="divider"></div>
+      <h2 class="about-title">Reliable, <em>thorough,</em> and ready to work.</h2>
+      <p class="about-desc">
+        I'm a VA aspirant who's been actively building my portfolio through structured challenges 
+        and real-world simulation tasks. Though I don't yet have formal employment experience as a VA, 
+        every task in this portfolio was completed under real briefs, evaluated by industry mentors, 
+        and approved for portfolio use.<br><br>
+        I care deeply about getting things right — whether that's researching the best halal restaurant 
+        for a client traveling abroad, cleaning a messy spreadsheet, or drafting a professional vendor email.
+      </p>
     </div>
-    
-    <div class="project-card" id="card-1">
-      <div class="project-num">Task 1</div>
-      <div class="project-brand" contenteditable="true" spellcheck="false">📌 Nama Brand (Glow &amp; Co. / Ruang Tumbuh / Seruni Studio / Dapur Nusantara)</div>
-      <div class="project-title" contenteditable="true" spellcheck="false">Judul Task yang Dikerjakan</div>
-      <div class="project-desc" contenteditable="true" spellcheck="false">Deskripsikan apa yang kamu kerjakan, pendekatan yang digunakan, dan apa hasilnya. Tulis 2–3 kalimat yang jelas dan spesifik.</div>
-      <div class="project-meta">
-        <div class="meta-row">
-          <span class="meta-label">📄 Format Output</span>
-          <span class="meta-value" contenteditable="true" spellcheck="false">contoh: Google Sheets / PDF / Canva</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">🏷️ Kategori</span>
-          <span class="meta-value" contenteditable="true" spellcheck="false">contoh: Data Entry / Social Media / Admin VA</span>
-        </div>
-      </div>
-      <div class="link-box">
-        <div class="link-box-header">
-          <span class="link-icon">🔗</span>
-          <span class="link-label">Link Hasil Kerja</span>
-          <span class="link-hint">Tempel link Google Drive, Canva, Notion, atau Sheets di bawah ini</span>
-        </div>
-        <div class="link-input-wrap">
-          <input type="url" class="link-input" placeholder="https://drive.google.com/... atau https://canva.com/..." 
-            oninput="updateLink(this, 1)" />
-          <button class="link-test-btn" onclick="testLink(1)" title="Buka link di tab baru">↗ Buka</button>
-        </div>
-        <div class="link-preview" id="preview-1" style="display:none">
-          <a class="link-preview-anchor" id="anchor-1" href="#" target="_blank" rel="noopener"></a>
-        </div>
-        <div class="link-types">
-          <span class="link-type-pill" onclick="setPlaceholder(1, 'https://drive.google.com/')">Google Drive</span>
-          <span class="link-type-pill" onclick="setPlaceholder(1, 'https://www.canva.com/design/')">Canva</span>
-          <span class="link-type-pill" onclick="setPlaceholder(1, 'https://notion.so/')">Notion</span>
-          <span class="link-type-pill" onclick="setPlaceholder(1, 'https://docs.google.com/spreadsheets/')">Google Sheets</span>
-          <span class="link-type-pill" onclick="setPlaceholder(1, 'https://docs.google.com/')">Google Docs</span>
-        </div>
-      </div>
-    </div>
-    <div class="project-card" id="card-2">
-      <div class="project-num">Task 2</div>
-      <div class="project-brand" contenteditable="true" spellcheck="false">📌 Nama Brand (Glow &amp; Co. / Ruang Tumbuh / Seruni Studio / Dapur Nusantara)</div>
-      <div class="project-title" contenteditable="true" spellcheck="false">Judul Task yang Dikerjakan</div>
-      <div class="project-desc" contenteditable="true" spellcheck="false">Deskripsikan apa yang kamu kerjakan, pendekatan yang digunakan, dan apa hasilnya. Tulis 2–3 kalimat yang jelas dan spesifik.</div>
-      <div class="project-meta">
-        <div class="meta-row">
-          <span class="meta-label">📄 Format Output</span>
-          <span class="meta-value" contenteditable="true" spellcheck="false">contoh: Google Sheets / PDF / Canva</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">🏷️ Kategori</span>
-          <span class="meta-value" contenteditable="true" spellcheck="false">contoh: Data Entry / Social Media / Admin VA</span>
-        </div>
-      </div>
-      <div class="link-box">
-        <div class="link-box-header">
-          <span class="link-icon">🔗</span>
-          <span class="link-label">Link Hasil Kerja</span>
-          <span class="link-hint">Tempel link Google Drive, Canva, Notion, atau Sheets di bawah ini</span>
-        </div>
-        <div class="link-input-wrap">
-          <input type="url" class="link-input" placeholder="https://drive.google.com/... atau https://canva.com/..." 
-            oninput="updateLink(this, 2)" />
-          <button class="link-test-btn" onclick="testLink(2)" title="Buka link di tab baru">↗ Buka</button>
-        </div>
-        <div class="link-preview" id="preview-2" style="display:none">
-          <a class="link-preview-anchor" id="anchor-2" href="#" target="_blank" rel="noopener"></a>
-        </div>
-        <div class="link-types">
-          <span class="link-type-pill" onclick="setPlaceholder(2, 'https://drive.google.com/')">Google Drive</span>
-          <span class="link-type-pill" onclick="setPlaceholder(2, 'https://www.canva.com/design/')">Canva</span>
-          <span class="link-type-pill" onclick="setPlaceholder(2, 'https://notion.so/')">Notion</span>
-          <span class="link-type-pill" onclick="setPlaceholder(2, 'https://docs.google.com/spreadsheets/')">Google Sheets</span>
-          <span class="link-type-pill" onclick="setPlaceholder(2, 'https://docs.google.com/')">Google Docs</span>
-        </div>
-      </div>
-    </div>
-    <div class="project-card" id="card-3">
-      <div class="project-num">Task 3</div>
-      <div class="project-brand" contenteditable="true" spellcheck="false">📌 Nama Brand (Glow &amp; Co. / Ruang Tumbuh / Seruni Studio / Dapur Nusantara)</div>
-      <div class="project-title" contenteditable="true" spellcheck="false">Judul Task yang Dikerjakan</div>
-      <div class="project-desc" contenteditable="true" spellcheck="false">Deskripsikan apa yang kamu kerjakan, pendekatan yang digunakan, dan apa hasilnya. Tulis 2–3 kalimat yang jelas dan spesifik.</div>
-      <div class="project-meta">
-        <div class="meta-row">
-          <span class="meta-label">📄 Format Output</span>
-          <span class="meta-value" contenteditable="true" spellcheck="false">contoh: Google Sheets / PDF / Canva</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">🏷️ Kategori</span>
-          <span class="meta-value" contenteditable="true" spellcheck="false">contoh: Data Entry / Social Media / Admin VA</span>
-        </div>
-      </div>
-      <div class="link-box">
-        <div class="link-box-header">
-          <span class="link-icon">🔗</span>
-          <span class="link-label">Link Hasil Kerja</span>
-          <span class="link-hint">Tempel link Google Drive, Canva, Notion, atau Sheets di bawah ini</span>
-        </div>
-        <div class="link-input-wrap">
-          <input type="url" class="link-input" placeholder="https://drive.google.com/... atau https://canva.com/..." 
-            oninput="updateLink(this, 3)" />
-          <button class="link-test-btn" onclick="testLink(3)" title="Buka link di tab baru">↗ Buka</button>
-        </div>
-        <div class="link-preview" id="preview-3" style="display:none">
-          <a class="link-preview-anchor" id="anchor-3" href="#" target="_blank" rel="noopener"></a>
-        </div>
-        <div class="link-types">
-          <span class="link-type-pill" onclick="setPlaceholder(3, 'https://drive.google.com/')">Google Drive</span>
-          <span class="link-type-pill" onclick="setPlaceholder(3, 'https://www.canva.com/design/')">Canva</span>
-          <span class="link-type-pill" onclick="setPlaceholder(3, 'https://notion.so/')">Notion</span>
-          <span class="link-type-pill" onclick="setPlaceholder(3, 'https://docs.google.com/spreadsheets/')">Google Sheets</span>
-          <span class="link-type-pill" onclick="setPlaceholder(3, 'https://docs.google.com/')">Google Docs</span>
-        </div>
-      </div>
-    </div>
-    <div class="project-card" id="card-4">
-      <div class="project-num">Task 4</div>
-      <div class="project-brand" contenteditable="true" spellcheck="false">📌 Nama Brand (Glow &amp; Co. / Ruang Tumbuh / Seruni Studio / Dapur Nusantara)</div>
-      <div class="project-title" contenteditable="true" spellcheck="false">Judul Task yang Dikerjakan</div>
-      <div class="project-desc" contenteditable="true" spellcheck="false">Deskripsikan apa yang kamu kerjakan, pendekatan yang digunakan, dan apa hasilnya. Tulis 2–3 kalimat yang jelas dan spesifik.</div>
-      <div class="project-meta">
-        <div class="meta-row">
-          <span class="meta-label">📄 Format Output</span>
-          <span class="meta-value" contenteditable="true" spellcheck="false">contoh: Google Sheets / PDF / Canva</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">🏷️ Kategori</span>
-          <span class="meta-value" contenteditable="true" spellcheck="false">contoh: Data Entry / Social Media / Admin VA</span>
-        </div>
-      </div>
-      <div class="link-box">
-        <div class="link-box-header">
-          <span class="link-icon">🔗</span>
-          <span class="link-label">Link Hasil Kerja</span>
-          <span class="link-hint">Tempel link Google Drive, Canva, Notion, atau Sheets di bawah ini</span>
-        </div>
-        <div class="link-input-wrap">
-          <input type="url" class="link-input" placeholder="https://drive.google.com/... atau https://canva.com/..." 
-            oninput="updateLink(this, 4)" />
-          <button class="link-test-btn" onclick="testLink(4)" title="Buka link di tab baru">↗ Buka</button>
-        </div>
-        <div class="link-preview" id="preview-4" style="display:none">
-          <a class="link-preview-anchor" id="anchor-4" href="#" target="_blank" rel="noopener"></a>
-        </div>
-        <div class="link-types">
-          <span class="link-type-pill" onclick="setPlaceholder(4, 'https://drive.google.com/')">Google Drive</span>
-          <span class="link-type-pill" onclick="setPlaceholder(4, 'https://www.canva.com/design/')">Canva</span>
-          <span class="link-type-pill" onclick="setPlaceholder(4, 'https://notion.so/')">Notion</span>
-          <span class="link-type-pill" onclick="setPlaceholder(4, 'https://docs.google.com/spreadsheets/')">Google Sheets</span>
-          <span class="link-type-pill" onclick="setPlaceholder(4, 'https://docs.google.com/')">Google Docs</span>
-        </div>
-      </div>
-    </div>
-    <div class="project-card" id="card-5">
-      <div class="project-num">Task 5</div>
-      <div class="project-brand" contenteditable="true" spellcheck="false">📌 Nama Brand (Glow &amp; Co. / Ruang Tumbuh / Seruni Studio / Dapur Nusantara)</div>
-      <div class="project-title" contenteditable="true" spellcheck="false">Judul Task yang Dikerjakan</div>
-      <div class="project-desc" contenteditable="true" spellcheck="false">Deskripsikan apa yang kamu kerjakan, pendekatan yang digunakan, dan apa hasilnya. Tulis 2–3 kalimat yang jelas dan spesifik.</div>
-      <div class="project-meta">
-        <div class="meta-row">
-          <span class="meta-label">📄 Format Output</span>
-          <span class="meta-value" contenteditable="true" spellcheck="false">contoh: Google Sheets / PDF / Canva</span>
-        </div>
-        <div class="meta-row">
-          <span class="meta-label">🏷️ Kategori</span>
-          <span class="meta-value" contenteditable="true" spellcheck="false">contoh: Data Entry / Social Media / Admin VA</span>
-        </div>
-      </div>
-      <div class="link-box">
-        <div class="link-box-header">
-          <span class="link-icon">🔗</span>
-          <span class="link-label">Link Hasil Kerja</span>
-          <span class="link-hint">Tempel link Google Drive, Canva, Notion, atau Sheets di bawah ini</span>
-        </div>
-        <div class="link-input-wrap">
-          <input type="url" class="link-input" placeholder="https://drive.google.com/... atau https://canva.com/..." 
-            oninput="updateLink(this, 5)" />
-          <button class="link-test-btn" onclick="testLink(5)" title="Buka link di tab baru">↗ Buka</button>
-        </div>
-        <div class="link-preview" id="preview-5" style="display:none">
-          <a class="link-preview-anchor" id="anchor-5" href="#" target="_blank" rel="noopener"></a>
-        </div>
-        <div class="link-types">
-          <span class="link-type-pill" onclick="setPlaceholder(5, 'https://drive.google.com/')">Google Drive</span>
-          <span class="link-type-pill" onclick="setPlaceholder(5, 'https://www.canva.com/design/')">Canva</span>
-          <span class="link-type-pill" onclick="setPlaceholder(5, 'https://notion.so/')">Notion</span>
-          <span class="link-type-pill" onclick="setPlaceholder(5, 'https://docs.google.com/spreadsheets/')">Google Sheets</span>
-          <span class="link-type-pill" onclick="setPlaceholder(5, 'https://docs.google.com/')">Google Docs</span>
-        </div>
-      </div>
+    <div class="about-right">
+      <div class="skills-section-label">Core Competencies</div>
+      <ul class="skills-list">
+        <li>Internet & Product Research</li>
+        <li>Budget Management</li>
+        <li>Data Entry & Cleaning</li>
+        <li>Database Management</li>
+        <li>Calendar & Schedule Management</li>
+        <li>Data Visualization</li>
+        <li>Professional Email Writing</li>
+        <li>Google Sheets / Forms</li>
+        <li>Client Clarification & Communication</li>
+        <li>Problem Solving & Adaptability</li>
+        <li>Accommodation & Travel Research</li>
+        <li>Dietary-Aware Restaurant Research</li>
+      </ul>
     </div>
   </div>
+</section>
 
-  <div class="section">
-    <div class="section-head"><div class="section-title">Pendidikan &amp; Pelatihan</div><div class="section-line"></div></div>
-    <div class="edu-card">
-      <div class="edu-label">🎓 Pelatihan · 2026</div>
-      <div class="edu-title" contenteditable="true" spellcheck="false">30 Day Portfolio Challenge Batch 2 — indriariadna.com</div>
-      <div class="edu-desc" contenteditable="true" spellcheck="false">Bootcamp intensif 30 hari membangun portofolio aktif sebagai Data Entry. Mengerjakan task berbasis brief brand dummy (Glow &amp; Co., Ruang Tumbuh, Seruni Studio, Dapur Nusantara) dengan output nyata yang bisa ditampilkan ke klien.</div>
+<!-- PROJECTS -->
+<section id="projects" style="padding: 6rem 5%;">
+  <div class="projects-section">
+    <div class="projects-header">
+      <div>
+        <div class="section-label">Portfolio</div>
+        <h2 class="section-title">Real Tasks.<br>Real Feedback.</h2>
+      </div>
+      <p class="section-sub" style="text-align:right; font-size:0.85rem;">
+        All projects below were completed under actual task briefs and reviewed by mentors.<br>
+        Click each project to see details.
+      </p>
     </div>
-    <div class="edu-card">
-      <div class="edu-label" contenteditable="true" spellcheck="false">🏫 Pendidikan Formal · Tahun Lulus</div>
-      <div class="edu-title" contenteditable="true" spellcheck="false">Nama Kampus / Sekolah</div>
-      <div class="edu-desc" contenteditable="true" spellcheck="false">Jurusan / Program Studi. Tambahkan pencapaian atau kegiatan relevan jika ada.</div>
+
+    <!-- PROJECT 1: THE MILK & HONEY VA -->
+    <div class="project-section" id="proj1">
+      <div class="project-header" onclick="toggleProject('proj1')">
+        <div class="project-header-left">
+          <div class="project-badge badge-orange">🍯 The Milk & Honey VA</div>
+          <div class="project-title">VA Recruitment Test — Admin & Research Skills</div>
+          <div class="project-meta">
+            <span>📅 2025</span>
+            <span>🛠 Research · Scheduling · Communication · Problem Solving</span>
+            <span>✅ Approved & Recommended</span>
+          </div>
+        </div>
+        <div class="project-header-right">
+          <div style="text-align:right; font-size:0.78rem; color:var(--text-muted); font-weight:600;">FEEDBACK</div>
+          <div style="background:#E8F0E3; color:var(--sage); padding:6px 14px; border-radius:100px; font-size:0.78rem; font-weight:700;">Recommended ✓</div>
+          <div class="toggle-icon">▼</div>
+        </div>
+      </div>
+
+      <div class="project-body">
+        <div class="callout">
+          <span class="callout-icon">💬</span>
+          <span>
+            Reviewer feedback: <strong>"Hasil jawaban sudah bagus dan rapi untuk pemula."</strong>
+            I was recommended to join as an intern — but the community is exclusively for homemakers (ibu rumah tangga), 
+            so the process didn't continue. This test proves my baseline VA readiness was already there.
+          </span>
+        </div>
+
+        <p style="font-size:0.88rem; color:var(--text-muted); margin-bottom:2rem; line-height:1.8;">
+          This was a 7-question recruitment test covering the core skills required for an Admin & Research VA role.
+          The test was completed, submitted, and received positive written feedback from the reviewer.
+          All answers below represent my final, polished version (post-feedback revisions applied).
+        </p>
+
+        <div class="qa-grid">
+
+          <div class="qa-card">
+            <div class="qa-number">1</div>
+            <div class="qa-q">Research & Budget Management — Eid Hamper Recommendations</div>
+            <div class="qa-desc">
+              Curated 5 personal hampers (≤Rp100K) and 5 family hampers (≤Rp500K) for Eid al-Fitr. 
+              Each recommendation includes brand, product details, pricing comparison across platforms, 
+              link, and shipping info. Sourced from local Indonesian brands including Savis Tea, Botanina, 
+              Herborist, Al Jeddah, Naturlife, Tazbiya, Fukumi, and more.
+            </div>
+            <div class="qa-skills">
+              <span class="qa-skill">Product Research</span>
+              <span class="qa-skill">Budget Management</span>
+              <span class="qa-skill">Price Comparison</span>
+            </div>
+          </div>
+
+          <div class="qa-card">
+            <div class="qa-number">2</div>
+            <div class="qa-q">Accommodation Research — London (Near Perio School)</div>
+            <div class="qa-desc">
+              Found 5 hotel options near Perio School, London, all within £300/night budget with 
+              twin beds + private bathroom. Included room details, amenities, cancellation policy, 
+              distance, and booking platform (Agoda). Options: Holiday Inn Regent's Park, Meliá White House, 
+              Gem Langham Court, Gem Fitzrovia, The Mandeville Hotel.
+            </div>
+            <div class="qa-skills">
+              <span class="qa-skill">Accommodation Research</span>
+              <span class="qa-skill">Travel Planning</span>
+            </div>
+          </div>
+
+          <div class="qa-card">
+            <div class="qa-number">3</div>
+            <div class="qa-q">Restaurant Research (Dietary Considerations) — London</div>
+            <div class="qa-desc">
+              Found 3 Muslim-friendly restaurants near Perio School. Included halal certification status, 
+              distance, price range, menu highlights, service charges, and hours. Added honest notes 
+              about alcohol risk and limitations (e.g., shared bar area at Gopal's Corner).
+            </div>
+            <div class="qa-skills">
+              <span class="qa-skill">Dietary Research</span>
+              <span class="qa-skill">Critical Evaluation</span>
+            </div>
+          </div>
+
+          <div class="qa-card">
+            <div class="qa-number">4</div>
+            <div class="qa-q">Client Clarification — Restaurant Booking</div>
+            <div class="qa-desc">
+              Listed 13 clarifying questions to ask a client before making a restaurant reservation — 
+              covering time, headcount, backup preferences, special occasions, seating needs, 
+              payment, and reconfirmation protocol.
+            </div>
+            <div class="qa-skills">
+              <span class="qa-skill">Client Communication</span>
+              <span class="qa-skill">Proactive Planning</span>
+            </div>
+          </div>
+
+          <div class="qa-card">
+            <div class="qa-number">5</div>
+            <div class="qa-q">Client Clarification — Flight Booking (CGK → DPS)</div>
+            <div class="qa-desc">
+              Listed 19 clarifying questions before booking a flight — covering trip purpose, 
+              passenger details, airline preference, baggage, special needs, budget, payment method, 
+              travel insurance, alternative options, and airport transport both ways.
+            </div>
+            <div class="qa-skills">
+              <span class="qa-skill">Client Clarification</span>
+              <span class="qa-skill">Travel Coordination</span>
+            </div>
+          </div>
+
+          <div class="qa-card">
+            <div class="qa-number">6</div>
+            <div class="qa-q">Scheduling & Professional Communication</div>
+            <div class="qa-desc">
+              Identified Wednesday 16:00–17:00 as the only overlapping slot between Vendor 1 
+              (Mon/Wed/Fri 11–17) and Vendor 2 (Wed/Thu after 16:00). Drafted a professional email 
+              in English proposing the meeting, including platform details and flexibility for rescheduling.
+            </div>
+            <div class="qa-skills">
+              <span class="qa-skill">Scheduling</span>
+              <span class="qa-skill">Professional Email</span>
+            </div>
+          </div>
+
+          <div class="qa-card">
+            <div class="qa-number">7</div>
+            <div class="qa-q">Problem Solving & Adaptability</div>
+            <div class="qa-desc">
+              Chose both scenarios (accommodation unavailable + restaurant fully booked). 
+              Drafted two WhatsApp-style client messages — concise, professional, and action-oriented. 
+              Each message included 3 alternative suggestions and a clear next step for the client to confirm.
+            </div>
+            <div class="qa-skills">
+              <span class="qa-skill">Crisis Handling</span>
+              <span class="qa-skill">Client Communication</span>
+            </div>
+          </div>
+
+          <div class="qa-card" style="border: 1.5px dashed var(--sand);">
+            <div class="qa-number" style="background:var(--terracotta);">★</div>
+            <div class="qa-q">Optional — Risk Awareness</div>
+            <div class="qa-desc">
+              Identified 2 key risks: (1) Miscommunication — prevented by confirming & documenting 
+              all client instructions in writing. (2) Scheduling & time management errors — prevented 
+              by double-checking availability, time zones, and building in contingency questions in advance.
+            </div>
+            <div class="qa-skills">
+              <span class="qa-skill">Risk Management</span>
+              <span class="qa-skill">Self-Awareness</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
     </div>
-    <div class="edu-card">
-      <div class="edu-label" contenteditable="true" spellcheck="false">📜 Sertifikasi / Kursus Lain (opsional)</div>
-      <div class="edu-title" contenteditable="true" spellcheck="false">Nama Kursus atau Sertifikasi</div>
-      <div class="edu-desc" contenteditable="true" spellcheck="false">Platform / Penyelenggara · Tahun</div>
+
+    <!-- PROJECT 2: 30 DPC -->
+    <div class="project-section" id="proj2">
+      <div class="project-header" onclick="toggleProject('proj2')">
+        <div class="project-header-left">
+          <div class="project-badge badge-green">📊 30 Day Portfolio Challenge — Batch 2</div>
+          <div class="project-title">Data Entry & Admin VA Tasks — Seruni Studio (Brand Simulation)</div>
+          <div class="project-meta">
+            <span>📅 April 2026</span>
+            <span>🛠 Data Entry · Google Sheets · Calendar Mgmt · Admin</span>
+            <span>🏢 Client: Seruni Studio (Fashion & Lifestyle brand dummy)</span>
+          </div>
+        </div>
+        <div class="project-header-right">
+          <div class="grade-badge grade-a">A</div>
+          <div style="font-size:0.72rem; color:var(--text-muted); font-weight:600;">AVG GRADE</div>
+          <div class="toggle-icon">▼</div>
+        </div>
+      </div>
+
+      <div class="project-body">
+        <div class="callout">
+          <span class="callout-icon">🏪</span>
+          <span>
+            <strong>About the brand:</strong> Seruni Studio is a dummy brand for this challenge — 
+            a local Indonesian fashion brand (ready-to-wear, inspired by Nusantara culture), 
+            targeting women 22–35 years old. Tone: elegant, warm, visual-first, proud of local.
+            All tasks simulate real VA work for an actual e-commerce fashion client.
+          </span>
+        </div>
+
+        <div class="feedback-box">
+          <p>
+            "Hurun'in, 5 task di dua kategori role berbeda — itu komitmen yang luar biasa untuk seorang pemula. 
+            Kalender manajemen 34 halaman yang kamu buat menunjukkan keseriusan dan ketelitian yang jarang terlihat. 
+            Jadwal 4 minggu Seruni Studio yang kamu susun terasa realistis dan operasional... 
+            Ini menunjukkan kamu sudah berpikir seperti seorang admin VA yang memahami bisnis, bukan hanya mengisi template kosong."
+          </p>
+          <div class="feedback-source">— Mentor feedback, 30 Day Portfolio Challenge Batch 2 · indriariadna.com</div>
+        </div>
+
+        <!-- Overall Scores -->
+        <div class="score-summary">
+          <div class="score-box">
+            <div class="score-big">36.7<span class="score-of">/40</span></div>
+            <div class="score-cat">Data Entry Avg</div>
+          </div>
+          <div class="score-box">
+            <div class="score-big">30<span class="score-of">/40</span></div>
+            <div class="score-cat">Calendar Mgmt</div>
+          </div>
+          <div class="score-box">
+            <div class="score-big">34<span class="score-of">/40</span></div>
+            <div class="score-cat">Overall (5 tasks)</div>
+          </div>
+          <div class="score-box">
+            <div class="score-big">100<span class="score-of">%</span></div>
+            <div class="score-cat">Tasks Approved</div>
+          </div>
+        </div>
+
+        <div class="tasks-grid">
+
+          <!-- Task 1 -->
+          <div class="task-card grade-a-card">
+            <div class="task-number">Task 01 · Data Entry</div>
+            <div class="task-name">Input & Clean Product Data — Google Sheets</div>
+            <div class="task-score-row">
+              <div class="score-bar-wrap"><div class="score-bar" style="width:95%"></div></div>
+              <div class="score-text">38/40</div>
+            </div>
+            <div class="task-criteria">
+              <div class="criteria-item">
+                <div class="criteria-label">Completeness</div>
+                <div class="criteria-value">9/10</div>
+              </div>
+              <div class="criteria-item">
+                <div class="criteria-label">Quality</div>
+                <div class="criteria-value">10/10</div>
+              </div>
+              <div class="criteria-item">
+                <div class="criteria-label">On Time</div>
+                <div class="criteria-value">9/10</div>
+              </div>
+              <div class="criteria-item">
+                <div class="criteria-label">Relevance</div>
+                <div class="criteria-value">10/10</div>
+              </div>
+            </div>
+            <div style="margin-top:1rem; font-size:0.78rem; color:var(--text-muted); line-height:1.6;">
+              Identified 10 types of data errors (duplicates, inconsistent format, empty SKU, wrong status logic). 
+              Cleaned raw dataset into a polished Data Bersih sheet. Reviewer note: "Shows business logic understanding, not just formatting."
+            </div>
+          </div>
+
+          <!-- Task 2 -->
+          <div class="task-card grade-a-card">
+            <div class="task-number">Task 02 · Data Entry</div>
+            <div class="task-name">E-commerce Product Database — 45 Products</div>
+            <div class="task-score-row">
+              <div class="score-bar-wrap"><div class="score-bar" style="width:87.5%"></div></div>
+              <div class="score-text">35/40</div>
+            </div>
+            <div class="task-criteria">
+              <div class="criteria-item">
+                <div class="criteria-label">Completeness</div>
+                <div class="criteria-value">9/10</div>
+              </div>
+              <div class="criteria-item">
+                <div class="criteria-label">Quality</div>
+                <div class="criteria-value">8/10</div>
+              </div>
+              <div class="criteria-item">
+                <div class="criteria-label">On Time</div>
+                <div class="criteria-value">9/10</div>
+              </div>
+              <div class="criteria-item">
+                <div class="criteria-label">Relevance</div>
+                <div class="criteria-value">9/10</div>
+              </div>
+            </div>
+            <div style="margin-top:1rem; font-size:0.78rem; color:var(--text-muted); line-height:1.6;">
+              Built 45-product database (exceeding 30 minimum) with SKU, category, color, sizes, 
+              normal & 20%-discount pricing, stock, status, and product descriptions. All consistent across rows.
+            </div>
+          </div>
+
+          <!-- Task 3 -->
+          <div class="task-card grade-a-card">
+            <div class="task-number">Task 03 · Data Visualization</div>
+            <div class="task-name">Sales Recap & Visualization — 3 Charts</div>
+            <div class="task-score-row">
+              <div class="score-bar-wrap"><div class="score-bar" style="width:92.5%"></div></div>
+              <div class="score-text">37/40</div>
+            </div>
+            <div class="task-criteria">
+              <div class="criteria-item">
+                <div class="criteria-label">Completeness</div>
+                <div class="criteria-value">9/10</div>
+              </div>
+              <div class="criteria-item">
+                <div class="criteria-label">Quality</div>
+                <div class="criteria-value">9/10</div>
+              </div>
+              <div class="criteria-item">
+                <div class="criteria-label">On Time</div>
+                <div class="criteria-value">9/10</div>
+              </div>
+              <div class="criteria-item">
+                <div class="criteria-label">Relevance</div>
+                <div class="criteria-value">10/10</div>
+              </div>
+            </div>
+            <div style="margin-top:1rem; font-size:0.78rem; color:var(--text-muted); line-height:1.6;">
+              Created 50-row transaction dataset + monthly sales recap (Jan–Mar) + 3 charts: 
+              total monthly sales, best-selling category, top platform. All calculations accurate throughout.
+            </div>
+          </div>
+
+          <!-- Task 5 (Calendar) -->
+          <div class="task-card grade-b-card">
+            <div class="task-number">Task 05 · Admin VA</div>
+            <div class="task-name">2-Week Calendar Management — Seruni Studio</div>
+            <div class="task-score-row">
+              <div class="score-bar-wrap"><div class="score-bar orange" style="width:75%"></div></div>
+              <div class="score-text">30/40</div>
+            </div>
+            <div class="task-criteria">
+              <div class="criteria-item">
+                <div class="criteria-label">Completeness</div>
+                <div class="criteria-value">7/10</div>
+              </div>
+              <div class="criteria-item">
+                <div class="criteria-label">Quality</div>
+                <div class="criteria-value">7/10</div>
+              </div>
+              <div class="criteria-item">
+                <div class="criteria-label">On Time</div>
+                <div class="criteria-value">9/10</div>
+              </div>
+              <div class="criteria-item">
+                <div class="criteria-label">Relevance</div>
+                <div class="criteria-value">7/10</div>
+              </div>
+            </div>
+            <div style="margin-top:1rem; font-size:0.78rem; color:var(--text-muted); line-height:1.6;">
+              Built a 2-week calendar simulation using Google Calendar, covering photoshoots, 
+              content upload deadlines, Instagram live, and vendor follow-ups. 
+              Reviewers noted solid foundation; suggested adding color-coding and PIC details for clarity.
+            </div>
+          </div>
+
+        </div>
+
+        <div style="background: var(--cream-dark); border-radius:12px; padding:1.5rem 2rem; font-size:0.82rem; color:var(--text-muted); line-height:1.8;">
+          <strong style="color:var(--brown);">Note on Task 4 (Google Form Onboarding):</strong>
+          This task was also completed and received Grade A (36/40) — but the output was a live Google Form link 
+          which can't be embedded here. Reviewer highlights: on-brand copywriting, conditional skip logic, 
+          digital signature closing, and professional section flow.
+        </div>
+      </div>
     </div>
+
   </div>
+</section>
 
-  <div class="footer">
-    Dibuat sebagai bagian dari <span>30 Day Portfolio Challenge Batch 2</span> · indriariadna.com
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="section-label" style="color:var(--terracotta);">Let's Connect</div>
+    <h2 class="section-title" style="color:var(--brown);">Open to VA Opportunities</h2>
+    <p style="font-size:0.9rem; color:var(--text-muted); line-height:1.8; margin-top:1rem;">
+      I'm actively looking for VA roles — admin, research, data entry, or assistant work.
+      If you're a client or know someone looking, I'd love to connect!
+    </p>
+    <div class="contact-links">
+      <a href="https://wa.me/6287760722836" class="contact-btn btn-dark" target="_blank">
+        💬 WhatsApp Me
+      </a>
+      <a href="mailto:uhurunin@yahoo.com" class="contact-btn btn-outline">
+        ✉ Email Me
+      </a>
+    </div>
+    <p style="font-size:0.75rem; color:var(--text-muted); margin-top:1.5rem;">
+      uhurunin@yahoo.com · +62 877 6072 2836
+    </p>
   </div>
+</section>
 
-</div>
+<footer>
+  <p>Portfolio by Hurun'in Zakkiyah · Virtual Assistant · Built 2026</p>
+</footer>
 
 <script>
-function updateLink(input, num) {
-  var val = input.value.trim();
-  var preview = document.getElementById('preview-' + num);
-  var anchor = document.getElementById('anchor-' + num);
-  if (val && (val.startsWith('http://') || val.startsWith('https://'))) {
-    anchor.href = val;
-    anchor.textContent = '🔗 ' + val;
-    preview.style.display = 'block';
-  } else {
-    preview.style.display = 'none';
+  function toggleProject(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
   }
-}
 
-function testLink(num) {
-  var input = document.querySelector('#card-' + num + ' .link-input');
-  var val = input.value.trim();
-  if (!val) { alert('Belum ada link yang dimasukkan.'); return; }
-  if (!val.startsWith('http')) { alert('Link harus dimulai dengan https://'); return; }
-  window.open(val, '_blank');
-}
+  // Auto-open both on load after small delay for smooth render
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.getElementById('proj1').classList.add('open');
+      document.getElementById('proj2').classList.add('open');
+    }, 300);
+  });
 
-function setPlaceholder(num, prefix) {
-  var input = document.querySelector('#card-' + num + ' .link-input');
-  if (!input.value) {
-    input.value = prefix;
-    input.focus();
-  }
-}
-
-function saveHTML() {
-  document.querySelectorAll('.projects-note, .tags-hint, .link-types, .link-hint').forEach(function(el) { el.style.display = 'none'; });
-  var name = document.querySelector('.header-name').innerText.trim() || 'portfolio';
-  var slug = name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '') || 'freelancer';
-  var role = 'data-entry';
-  var html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-  var blob = new Blob([html], { type: 'text/html' });
-  var a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'portfolio-' + slug + '-' + role + '.html';
-  a.click();
-  setTimeout(function() {
-    document.querySelectorAll('.projects-note, .tags-hint, .link-types, .link-hint').forEach(function(el) { el.style.display = ''; });
-  }, 500);
-}
+  // Animate score bars on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.style.width = e.target.dataset.width;
+      }
+    });
+  }, { threshold: 0.3 });
+  document.querySelectorAll('.score-bar').forEach(bar => {
+    const w = bar.style.width;
+    bar.dataset.width = w;
+    bar.style.width = '0';
+    observer.observe(bar);
+  });
 </script>
 </body>
 </html>
